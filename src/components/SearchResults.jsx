@@ -10,7 +10,7 @@ import Spinner from "./Spinner"
 import Error from './Error'
 
 function SearchResults() {
-  const { recipeData, isLoading, pagination, showPage, id, bookmarkedRecipesData, showPagBtns, dispatch } = useContext(ForkifyContext)
+  const { recipeData, isLoading, pagination, showPage, id, bookmarkedRecipesData, showPagBtns, error, dispatch } = useContext(ForkifyContext)
 
   const recipesPerPage = import.meta.env.VITE_RES_PER_PAGE;
   const indexOfLastRecipe = pagination * recipesPerPage;
@@ -63,13 +63,15 @@ function SearchResults() {
           {isLoading ? <Spinner /> : currentRecipes.map(data => (
             <RecipePreview key={data.id} recipeData={data} />
           ))}
+
+          {/* {error && <Error />} */}
         </ul>
 
         {showPagBtns && <PaginationButtons />}
 
       </div>
       <div className="recipe">
-        {/* <Error /> */}
+        {/* {error && <Error />} */}
 
         {!id && (
           <div className="message">

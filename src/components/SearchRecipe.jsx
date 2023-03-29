@@ -16,14 +16,17 @@ function SearchRecipe() {
     if (query.trim().length === 0) return;
 
     try {
+      dispatch({ type: "SET_ERROR", payload: false })
       dispatch({ type: "SET_LOADING" })
+
       const { recipes } = await getRecipes(query)
 
       dispatch({ type: "GET_RECIPES", payload: recipes })
       dispatch({ type: "SET_QUERY", payload: "" })
       dispatch({ type: "SET_SHOW_PAGINATION", payload: true })
     } catch (error) {
-      console.log(error)
+      dispatch({ type: "GET_RECIPES", payload: [] })
+      // dispatch({ type: "SET_ERROR", payload: true })
       dispatch({ type: "SET_SHOW_PAGINATION", payload: false })
     } finally {
       dispatch({ type: "REMOVE_LOADING" })

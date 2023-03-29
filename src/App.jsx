@@ -3,7 +3,7 @@ import SearchResults from './components/SearchResults'
 import { AddRecipeProvider } from './context/addRecipe/AddRecipeContext';
 import { ForkifyProvider } from './context/forkify/ForkifyContext';
 
-function App () {
+function App() {
   return (
     <AddRecipeProvider>
       <ForkifyProvider>

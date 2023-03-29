@@ -36,11 +36,11 @@ function AddRecipe() {
       const data = await uploadRecipe(recipe);
 
       dispatch({ type: "SET_ADD_FORM", payload: false })
-      forkifyDispatch({ type: "SET_RECIPE", payload: false })
+      forkifyDispatch({ type: "ADD_BOOKMARKED_RECIPES", payload: data.recipe });
       forkifyDispatch({ type: "SET_ID", payload: data.recipe.id })
       history.pushState(null, null, `#${data.recipe.id}`);
-    } catch (err) {
-      throw err;
+    } catch (error) {
+      console.log(error)
     }
   }
 

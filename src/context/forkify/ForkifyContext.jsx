@@ -16,7 +16,6 @@ export const ForkifyProvider = ({ children }) => {
     isLoading: false,
     showPage: false,
     isBookmarked: false,
-    byUser: false,
     error: false,
   }
 

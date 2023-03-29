@@ -3,7 +3,7 @@ import ForkifyContext from '../context/forkify/ForkifyContext'
 import icons from "../assets/svg/icons.svg"
 
 function RecipePreview({ recipeData }) {
-  const { byUser, id, dispatch } = useContext(ForkifyContext)
+  const { id, dispatch } = useContext(ForkifyContext)
 
   return (
     <li
@@ -20,7 +20,7 @@ function RecipePreview({ recipeData }) {
         <div className="preview__data">
           <h4 className="preview__title">{recipeData.title}</h4>
           <p className="preview__publisher">{recipeData.publisher}</p>
-          {byUser &&
+          {recipeData.key &&
             <div className="preview__user-generated">
               <svg>
                 <use href={`${icons}#icon-user`}></use>

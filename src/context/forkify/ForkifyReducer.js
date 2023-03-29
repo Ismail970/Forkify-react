@@ -56,6 +56,10 @@ const FokifyReducer = (state, action) => {
       ...state,
       showPagBtns: action.payload,
     }
+    // case "SET_ERROR": return {
+    //   ...state,
+    //   error: action.payload,
+    // }
     default: return state
   }
 }

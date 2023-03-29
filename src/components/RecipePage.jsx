@@ -3,7 +3,7 @@ import ForkifyContext from '../context/forkify/ForkifyContext'
 import icons from "../assets/svg/icons.svg"
 
 function RecipePage() {
-  const { currentRecipeData, isBookmarked, servings, byUser, dispatch } = useContext(ForkifyContext)
+  const { currentRecipeData, isBookmarked, servings, dispatch } = useContext(ForkifyContext)
 
   const handleBookmark = () => {
     const newBookmarkState = !isBookmarked;
@@ -77,7 +77,7 @@ function RecipePage() {
           </div>
         </div>
 
-        <div className={`recipe__user-generated ${!byUser && "hidden"}`}>
+        <div className={`recipe__user-generated ${!currentRecipeData.key && "hidden"}`}>
           <svg>
             <use href={`${icons}#icon-user`}></use>
           </svg>
@@ -96,7 +96,7 @@ function RecipePage() {
       <div className="recipe__ingredients">
         <h2 className="heading--2">Recipe ingredients</h2>
         <ul className="recipe__ingredient-list">
-          {currentRecipeData.ingredients.map((ing, i) => (
+          {currentRecipeData.ingredients?.map((ing, i) => (
             <li className="recipe__ingredient" key={i}>
               <svg className="recipe__icon">
                 <use href={`${icons}#icon-check`}></use>
