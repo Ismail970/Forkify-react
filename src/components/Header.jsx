@@ -1,14 +1,16 @@
 import { useContext } from 'react'
 import ForkifyContext from '../context/forkify/ForkifyContext'
+import AddRecipeContext from "../context/addRecipe/AddRecipeContext"
+import AlertContext from '../context/alert/AlertContext'
 import logo from "../assets/img/logo.png"
 import icons from "../assets/svg/icons.svg"
 import SearchRecipe from './SearchRecipe'
 import RecipePreview from './RecipesPreview'
-import AddRecipeContext from "../context/addRecipe/AddRecipeContext"
 
 function Header() {
   const { bookmarkedRecipesData } = useContext(ForkifyContext)
   const { dispatch } = useContext(AddRecipeContext)
+  const { setUploadAlert } = useContext(AlertContext)
 
   return (
     <header className="header">
@@ -24,7 +26,10 @@ function Header() {
         <ul className="nav__list">
           <li
             className="nav__item"
-            onClick={() => dispatch({ type: "SET_ADD_FORM", payload: true })}
+            onClick={() => {
+              dispatch({ type: "SET_ADD_FORM", payload: true })
+              setUploadAlert(false)
+            }}
           >
             <button className="nav__btn nav__btn--add-recipe">
               <svg className="nav__icon">

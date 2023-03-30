@@ -8,13 +8,9 @@ const FokifyReducer = (state, action) => {
       ...state,
       query: action.payload
     }
-    case "SET_LOADING": return {
+    case "SET_SHOW_RESAULTS": return {
       ...state,
-      isLoading: true
-    }
-    case "REMOVE_LOADING": return {
-      ...state,
-      isLoading: false
+      showResaults: action.payload
     }
     case "SET_BOOKMARK": return {
       ...state,
@@ -56,10 +52,6 @@ const FokifyReducer = (state, action) => {
       ...state,
       showPagBtns: action.payload,
     }
-    // case "SET_ERROR": return {
-    //   ...state,
-    //   error: action.payload,
-    // }
     default: return state
   }
 }

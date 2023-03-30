@@ -13,10 +13,9 @@ export const ForkifyProvider = ({ children }) => {
     servings: null,
     pagination: 1,
     showPagBtns: false,
-    isLoading: false,
+    showResaults: false,
     showPage: false,
     isBookmarked: false,
-    error: false,
   }
 
   const [state, dispatch] = useReducer(fokifyReducer, initialState)

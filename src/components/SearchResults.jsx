@@ -1,16 +1,18 @@
 import { useContext, useEffect } from 'react'
 import { getRecipe } from "../context/forkify/ForkifyActions";
 import ForkifyContext from '../context/forkify/ForkifyContext'
+import AlertContext from '../context/alert/AlertContext';
 import icons from "../assets/svg/icons.svg"
 import RecipePreview from './RecipesPreview'
 import RecipePage from './RecipePage'
 import AddRecipe from "./AddRecipe"
 import PaginationButtons from './PaginationButtons';
 import Spinner from "./Spinner"
-import Error from './Error'
+import Alert from './Alert'
 
 function SearchResults() {
-  const { recipeData, isLoading, pagination, showPage, id, bookmarkedRecipesData, showPagBtns, error, dispatch } = useContext(ForkifyContext)
+  const { recipeData, showResaults, pagination, showPage, id, bookmarkedRecipesData, showPagBtns, dispatch } = useContext(ForkifyContext)
+  const { setAlert, pageErr, searchErr, setPageErr } = useContext(AlertContext)
 
   const recipesPerPage = import.meta.env.VITE_RES_PER_PAGE;
   const indexOfLastRecipe = pagination * recipesPerPage;
@@ -36,6 +38,7 @@ function SearchResults() {
       if (!id) return;
 
       try {
+        setPageErr(false)
         dispatch({ type: "SET_PAGE", payload: false })
 
         const { recipe } = await getRecipe(id)
@@ -48,8 +51,9 @@ function SearchResults() {
         dispatch({ type: "SET_BOOKMARK", payload: isBookmarked });
 
       } catch (error) {
-        console.log(error)
         dispatch({ type: "SET_PAGE", payload: false })
+        setAlert(error.message)
+        setPageErr(true)
       }
     }
 
@@ -60,18 +64,18 @@ function SearchResults() {
     <>
       <div className="search-results">
         <ul className="results">
-          {isLoading ? <Spinner /> : currentRecipes.map(data => (
+          {showResaults ? <Spinner /> : currentRecipes.map(data => (
             <RecipePreview key={data.id} recipeData={data} />
           ))}
 
-          {/* {error && <Error />} */}
+          {searchErr && <Alert />}
         </ul>
 
         {showPagBtns && <PaginationButtons />}
 
       </div>
       <div className="recipe">
-        {/* {error && <Error />} */}
+        {pageErr && <Alert />}
 
         {!id && (
           <div className="message">
@@ -86,7 +90,7 @@ function SearchResults() {
 
         {showPage
           ? <RecipePage />
-          : id && <Spinner />
+          : (id && !pageErr) && <Spinner />
         }
       </div>
 

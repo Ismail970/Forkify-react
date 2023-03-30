@@ -1,10 +1,12 @@
 import { useContext } from 'react'
 import { getRecipes } from "../context/forkify/ForkifyActions";
 import ForkifyContext from '../context/forkify/ForkifyContext'
+import AlertContext from '../context/alert/AlertContext';
 import icons from "../assets/svg/icons.svg"
 
 function SearchRecipe() {
   const { query, dispatch } = useContext(ForkifyContext)
+  const { setAlert, setSearchErr } = useContext(AlertContext)
 
   const handleInput = e => {
     e.preventDefault()
@@ -16,8 +18,8 @@ function SearchRecipe() {
     if (query.trim().length === 0) return;
 
     try {
-      dispatch({ type: "SET_ERROR", payload: false })
-      dispatch({ type: "SET_LOADING" })
+      setSearchErr(false)
+      dispatch({ type: "SET_SHOW_RESAULTS", payload: true })
 
       const { recipes } = await getRecipes(query)
 
@@ -26,10 +28,12 @@ function SearchRecipe() {
       dispatch({ type: "SET_SHOW_PAGINATION", payload: true })
     } catch (error) {
       dispatch({ type: "GET_RECIPES", payload: [] })
-      // dispatch({ type: "SET_ERROR", payload: true })
       dispatch({ type: "SET_SHOW_PAGINATION", payload: false })
+
+      setAlert(error.message)
+      setSearchErr(true)
     } finally {
-      dispatch({ type: "REMOVE_LOADING" })
+      dispatch({ type: "SET_SHOW_RESAULTS", payload: false })
     }
   }
 
