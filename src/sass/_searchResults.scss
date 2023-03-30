@@ -2,6 +2,13 @@
   padding: 3rem 0;
   display: flex;
   flex-direction: column;
+
+  // mobile
+  @media only screen and (max-width: 31.25em) {
+    z-index: 1;
+    background-color: white;
+    width: 100%;
+  }
 }
 
 .results {
@@ -23,20 +30,9 @@
     &--prev {
       float: left;
     }
+
     &--next {
       float: right;
     }
-  }
-}
-
-.copyright {
-  color: $color-grey-dark-2;
-  font-size: 1.2rem;
-  padding: 0 3.5rem;
-  margin-top: 4rem;
-
-  .twitter-link:link,
-  .twitter-link:visited {
-    color: $color-grey-dark-2;
   }
 }

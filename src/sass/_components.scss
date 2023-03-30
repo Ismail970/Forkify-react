@@ -37,6 +37,7 @@
 }
 
 .btn--small {
+
   &,
   &:link,
   &:visited {
@@ -97,7 +98,6 @@
   cursor: pointer;
   height: 4.5rem;
   width: 4.5rem;
-  // margin-left: auto;
   transition: all 0.2s;
 
   display: flex;
@@ -116,6 +116,11 @@
     height: 2.5rem;
     width: 2.5rem;
     fill: #fff;
+  }
+
+  // mobile
+  @media only screen and (max-width: 31.25em) {
+    padding: 8px;
   }
 }
 
