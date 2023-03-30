@@ -1,4 +1,4 @@
-import Header from './components/Header'
+import Nav from './components/Nav'
 import SearchResults from './components/SearchResults'
 import { AddRecipeProvider } from './context/addRecipe/AddRecipeContext';
 import { ForkifyProvider } from './context/forkify/ForkifyContext';
@@ -10,7 +10,7 @@ function App() {
       <AddRecipeProvider>
         <ForkifyProvider>
           <div className="container">
-            <Header />
+            <Nav />
             <SearchResults />
           </div>
         </ForkifyProvider>
