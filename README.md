@@ -1,4 +1,4 @@
-# Forkify
+# Forkify-react
 
 ## Table of contents
 
@@ -13,7 +13,7 @@
 
 ### Links
 
-- [**Live Site**](https://forkify-ismail.netlify.app/)
+- [**Live Site**](https://forkify-r-i.netlify.app/)
 
 ### Built with
 
