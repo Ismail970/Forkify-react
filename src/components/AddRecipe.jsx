@@ -6,14 +6,14 @@ import AlertContext from '../context/alert/AlertContext'
 import icons from "../assets/svg/icons.svg"
 import Alert from "./Alert"
 
-const MODEL_CLOSE_SEC = import.meta.env.VITE_MODEL_CLOSE_SEC
-
 function AddRecipe() {
+  const MODEL_CLOSE_SEC = import.meta.env.VITE_MODEL_CLOSE_SEC
+
   const { dispatch, showAddForm } = useContext(AddRecipeContext)
   const { dispatch: forkifyDispatch } = useContext(ForkifyContext)
   const { setAlert, setUploadAlert, uploadAlert } = useContext(AlertContext)
 
-  const handleUploadRecipe = async e => {
+  const onSubmit = async e => {
     e.preventDefault()
 
     const formDataArr = [...new FormData(e.target)];
@@ -43,7 +43,7 @@ function AddRecipe() {
       const data = await uploadRecipe(recipe);
 
       setTimeout(() => dispatch({ type: "SET_ADD_FORM", payload: false }), MODEL_CLOSE_SEC * 1000)
-      forkifyDispatch({ type: "ADD_BOOKMARKED_RECIPES", payload: data.recipe });
+      forkifyDispatch({ type: "SET_BOOKMARKED_RECIPES", payload: data.recipe });
       forkifyDispatch({ type: "SET_ID", payload: data.recipe.id })
       history.pushState(null, null, `#${data.recipe.id}`);
 
@@ -55,7 +55,7 @@ function AddRecipe() {
     }
   }
 
-  const handleFormShow = () => {
+  const onClick = () => {
     dispatch({ type: "SET_ADD_FORM", payload: false })
   }
 
@@ -63,18 +63,18 @@ function AddRecipe() {
     <>
       <div
         className={`overlay ${!showAddForm && "hidden"}`}
-        onClick={handleFormShow}
+        onClick={onClick}
       ></div>
       <div className={`add-recipe-window ${!showAddForm && "hidden"}`}>
         <button
           className="btn--close-modal"
-          onClick={handleFormShow}
+          onClick={onClick}
         >
           &times;
         </button>
         <form
           className="upload"
-          onSubmit={handleUploadRecipe}
+          onSubmit={onSubmit}
         >
           {!uploadAlert
             ? <>

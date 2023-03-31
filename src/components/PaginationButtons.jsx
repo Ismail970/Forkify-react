@@ -7,12 +7,16 @@ function PaginationButtons() {
 
   const numPages = Math.ceil(recipeData.length / 10);
 
+  const handleDecrement = () => dispatch({ type: "SET_PAGINATION", payload: pagination - 1 })
+
+  const handleIncrement = () => dispatch({ type: "SET_PAGINATION", payload: pagination + 1 })
+
   return (
     <div className="pagination">
 
       {pagination > 1 && <button
         className="btn--inline pagination__btn--prev"
-        onClick={() => dispatch({ type: "SET_PAGINATION", payload: pagination - 1 })}
+        onClick={handleDecrement}
       >
         <svg className="search__icon">
           <use href={`${icons}#icon-arrow-left`}></use>
@@ -22,7 +26,7 @@ function PaginationButtons() {
 
       {numPages !== pagination && <button
         className="btn--inline pagination__btn--next"
-        onClick={() => dispatch({ type: "SET_PAGINATION", payload: pagination + 1 })}
+        onClick={handleIncrement}
       >
         <span>Page {pagination + 1}</span>
         <svg className="search__icon">

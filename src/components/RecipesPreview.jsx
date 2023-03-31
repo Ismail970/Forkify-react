@@ -5,10 +5,12 @@ import icons from "../assets/svg/icons.svg"
 function RecipePreview({ recipeData }) {
   const { id, dispatch } = useContext(ForkifyContext)
 
+  const onClick = () => dispatch({ type: 'SET_ACTIVE_RECIPE', payload: recipeData.id })
+
   return (
     <li
       className="preview"
-      onClick={() => dispatch({ type: 'SET_ACTIVE_RECIPE', payload: recipeData.id })}
+      onClick={onClick}
     >
       <a
         className={`preview__link ${recipeData.id === id && 'preview__link--active'}`}

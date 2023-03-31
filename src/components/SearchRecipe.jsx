@@ -8,12 +8,12 @@ function SearchRecipe() {
   const { query, dispatch } = useContext(ForkifyContext)
   const { setAlert, setSearchErr } = useContext(AlertContext)
 
-  const handleInput = e => {
+  const onChange = e => {
     e.preventDefault()
     dispatch({ type: "SET_QUERY", payload: e.target.value })
   }
 
-  const handleSearch = async e => {
+  const onSubmit = async e => {
     e.preventDefault()
     if (query.trim().length === 0) return;
 
@@ -40,13 +40,13 @@ function SearchRecipe() {
   return (
     <form
       className="search"
-      onSubmit={handleSearch}
+      onSubmit={onSubmit}
     >
       <input
         type="text"
         className="search__field"
         placeholder="Search over 1,000,000 recipes..."
-        onChange={handleInput}
+        onChange={onChange}
         value={query}
       />
       <button className="btn search__btn">

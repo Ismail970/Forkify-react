@@ -28,18 +28,10 @@ const FokifyReducer = (state, action) => {
       ...state,
       id: action.payload,
     }
-    case "ADD_BOOKMARKED_RECIPES": return {
+    case "SET_BOOKMARKED_RECIPES": return {
       ...state,
-      bookmarkedRecipesData: Array.isArray(state.bookmarkedRecipesData) && [...state.bookmarkedRecipesData, action.payload],
+      bookmarkedRecipesData: action.payload,
     }
-    case "REMOVE_BOOKMARKED_RECIPE":
-      const updatedBookmarks = state.bookmarkedRecipesData.filter(
-        (recipe) => recipe.id !== action.payload
-      );
-      return {
-        ...state,
-        bookmarkedRecipesData: updatedBookmarks,
-      };
     case "UPDATE_SERVINGS": return {
       ...state,
       servings: action.payload,
