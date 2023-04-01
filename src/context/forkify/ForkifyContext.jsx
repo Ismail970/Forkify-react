@@ -4,9 +4,6 @@ import useLocalStorage from '../../hooks/useLocalStorage';
 
 const ForkifyContext = createContext()
 
-// use axios
-// modify fokifycontext
-
 export const ForkifyProvider = ({ children }) => {
   const initialState = {
     id: "",
