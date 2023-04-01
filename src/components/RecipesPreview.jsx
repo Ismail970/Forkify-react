@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import { useContext } from 'react'
 import ForkifyContext from '../context/forkify/ForkifyContext'
 import icons from "../assets/svg/icons.svg"
@@ -32,6 +33,11 @@ function RecipePreview({ recipeData }) {
       </a>
     </li>
   )
+
+}
+
+RecipePreview.propTypes = {
+  recipeData: PropTypes.object.isRequired,
 }
 
 export default RecipePreview

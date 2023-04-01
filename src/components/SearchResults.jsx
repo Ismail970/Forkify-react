@@ -21,7 +21,7 @@ function SearchResults() {
   const {
     setAlert,
     searchErr,
-    setPageErr
+    dispatch: alertDispatch
   } = useContext(AlertContext)
 
   const RES_PER_PAGE = import.meta.env.VITE_RES_PER_PAGE;
@@ -48,7 +48,7 @@ function SearchResults() {
       if (!id) return;
 
       try {
-        setPageErr(false)
+        alertDispatch({ type: "SET_PAGE_ERROR", payload: false })
         dispatch({ type: "SET_PAGE", payload: false })
 
         const { recipe } = await getRecipe(id)
@@ -63,7 +63,7 @@ function SearchResults() {
       } catch (error) {
         dispatch({ type: "SET_PAGE", payload: false })
         setAlert(error.message)
-        setPageErr(true)
+        alertDispatch({ type: "SET_PAGE_ERROR", payload: true })
       }
     }
 

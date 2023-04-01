@@ -6,11 +6,11 @@ import BookmarkRecipe from "./BookmarkRecipe"
 
 function Nav() {
   const { dispatch } = useContext(AddRecipeContext)
-  const { setUploadAlert } = useContext(AlertContext)
+  const { dispatch: alertDispatch } = useContext(AlertContext)
 
   const onClick = () => {
     dispatch({ type: "SET_ADD_FORM", payload: true })
-    setUploadAlert(false)
+    alertDispatch({ type: "SET_UPLOAD_ALERT", payload: false })
   }
 
   return (

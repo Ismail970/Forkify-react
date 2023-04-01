@@ -1,7 +1,11 @@
 import { createContext, useReducer } from 'react';
 import fokifyReducer from './ForkifyReducer';
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 const ForkifyContext = createContext()
+
+// use axios
+// modify fokifycontext
 
 export const ForkifyProvider = ({ children }) => {
   const initialState = {
@@ -20,11 +24,15 @@ export const ForkifyProvider = ({ children }) => {
 
   const [state, dispatch] = useReducer(fokifyReducer, initialState)
 
+  const [bookmarks, setBookmarks] = useLocalStorage('bookmarks', state.bookmarkedRecipesData);
+
   return (
     <ForkifyContext.Provider
       value={{
         ...state,
-        dispatch
+        dispatch,
+        bookmarks,
+        setBookmarks
       }}
     >
       {children}

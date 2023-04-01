@@ -4,7 +4,6 @@ import icons from "../assets/svg/icons.svg"
 import AlertContext from '../context/alert/AlertContext'
 import Spinner from './Spinner'
 import Alert from './Alert'
-import useLocalStorage from '../hooks/useLocalStorage'
 
 function RecipePage() {
   const {
@@ -13,13 +12,12 @@ function RecipePage() {
     currentRecipeData,
     isBookmarked,
     servings,
-    dispatch,
-    bookmarkedRecipesData
+    bookmarks,
+    setBookmarks,
+    dispatch
   } = useContext(ForkifyContext)
 
   const { pageErr } = useContext(AlertContext)
-
-  const [bookmarks, setBookmarks] = useLocalStorage('bookmarks', []);
 
   const handleAddBookmark = () => {
     const newBookmarkState = !isBookmarked;
@@ -34,9 +32,7 @@ function RecipePage() {
       setBookmarks(newData)
     }
 
-    dispatch({
-      type: "SET_BOOKMARKED_RECIPES", payload: data,
-    })
+    dispatch({ type: "SET_BOOKMARKED_RECIPES", payload: data })
   }
 
   const handleDecrement = () => servings > 1 && dispatch({ type: "UPDATE_SERVINGS", payload: servings - 1 })
@@ -45,9 +41,7 @@ function RecipePage() {
 
   useEffect(() => {
     dispatch({ type: "UPDATE_SERVINGS", payload: currentRecipeData.servings })
-
-    dispatch({ type: "SET_BOOKMARKED_RECIPES", payload: bookmarks })
-  }, [])
+  }, [currentRecipeData])
 
   return (
     <div className="recipe">

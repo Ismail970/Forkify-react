@@ -12,7 +12,11 @@ const timeout = s => {
 
 export const getRecipes = async query => {
   try {
-    const res = await Promise.race([fetch(`${API_URL}?search=${query}&key=${KEY}`), timeout(TIMEOUT_SEC)]);
+    const params = new URLSearchParams({
+      search: query,
+    })
+
+    const res = await Promise.race([fetch(`${API_URL}?${params.toString()}&key=${KEY}`), timeout(TIMEOUT_SEC)]);
     const { data } = await res.json()
     return data
   } catch (error) {
@@ -22,7 +26,11 @@ export const getRecipes = async query => {
 
 export const getRecipe = async id => {
   try {
-    const res = await Promise.race([fetch(`${API_URL}${id}?key=${KEY}`), timeout(TIMEOUT_SEC)]);
+    const params = new URLSearchParams({
+      id,
+    })
+
+    const res = await Promise.race([fetch(`${API_URL}${params.toString().replace("id=", "")}?key=${KEY}`), timeout(TIMEOUT_SEC)]);
     const { data } = await res.json()
     return data
   } catch (error) {

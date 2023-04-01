@@ -1,16 +1,17 @@
-import { createContext, useReducer, useState } from 'react';
+import { createContext, useReducer } from 'react';
 import alertReducer from "./AlertReducer"
 
 const AlertContext = createContext()
 
 export const AlertProvider = ({ children }) => {
-  const initialState = null
+  const initialState = {
+    alert: null,
+    searchErr: false,
+    pageErr: false,
+    uploadAlert: false,
+  }
 
   const [state, dispatch] = useReducer(alertReducer, initialState)
-
-  const [searchErr, setSearchErr] = useState(false)
-  const [pageErr, setPageErr] = useState(false)
-  const [uploadAlert, setUploadAlert] = useState(false)
 
   const setAlert = (msg = "No recipes found for your query. Please try again!", type = false) => {
     dispatch({
@@ -21,14 +22,9 @@ export const AlertProvider = ({ children }) => {
 
   return (
     <AlertContext.Provider value={{
-      alert: state,
-      searchErr,
-      pageErr,
-      uploadAlert,
-      setSearchErr,
-      setPageErr,
-      setUploadAlert,
-      setAlert,
+      ...state,
+      dispatch,
+      setAlert
     }}>
       {children}
     </AlertContext.Provider>

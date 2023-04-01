@@ -10,8 +10,8 @@ function AddRecipe() {
   const MODEL_CLOSE_SEC = import.meta.env.VITE_MODEL_CLOSE_SEC
 
   const { dispatch, showAddForm } = useContext(AddRecipeContext)
-  const { dispatch: forkifyDispatch } = useContext(ForkifyContext)
-  const { setAlert, setUploadAlert, uploadAlert } = useContext(AlertContext)
+  const { bookmarkedRecipesData, setBookmarks, dispatch: forkifyDispatch } = useContext(ForkifyContext)
+  const { setAlert, dispatch: alertDispatch, uploadAlert } = useContext(AlertContext)
 
   const onSubmit = async e => {
     e.preventDefault()
@@ -20,7 +20,7 @@ function AddRecipe() {
     const formData = Object.fromEntries(formDataArr);
 
     try {
-      setUploadAlert(false)
+      alertDispatch({ type: "SET_UPLOAD_ALERT", payload: false })
 
       const ingredients = Object.entries(formData).filter(entry => entry[0].startsWith("ingredient") && entry[1] !== "").map(ing => {
         const ingArr = ing[1].split(",").map(el => el.trim());
@@ -41,9 +41,14 @@ function AddRecipe() {
       };
 
       const data = await uploadRecipe(recipe);
+      const newBookmark = [...bookmarkedRecipesData]
+      newBookmark.push(data.recipe)
 
       setTimeout(() => dispatch({ type: "SET_ADD_FORM", payload: false }), MODEL_CLOSE_SEC * 1000)
-      forkifyDispatch({ type: "SET_BOOKMARKED_RECIPES", payload: data.recipe });
+
+      forkifyDispatch({ type: "SET_BOOKMARKED_RECIPES", payload: newBookmark });
+      setBookmarks(newBookmark)
+
       forkifyDispatch({ type: "SET_ID", payload: data.recipe.id })
       history.pushState(null, null, `#${data.recipe.id}`);
 
@@ -51,7 +56,7 @@ function AddRecipe() {
     } catch (error) {
       setAlert(error.message)
     } finally {
-      setUploadAlert(true)
+      alertDispatch({ type: "SET_UPLOAD_ALERT", payload: true })
     }
   }
 
@@ -80,7 +85,7 @@ function AddRecipe() {
             ? <>
               <div className="upload__column">
                 <h3 className="upload__heading">Recipe data</h3>
-                <label >Title</label>
+                <label>Title</label>
                 <input required name="title" type="text" />
                 <label>URL</label>
                 <input required name="sourceUrl" type="text" />

@@ -4,20 +4,16 @@ import icons from "../assets/svg/icons.svg"
 import RecipePreview from './RecipesPreview'
 
 function BookmarkRecipe() {
-  const { bookmarkedRecipesData, currentRecipeData, dispatch } = useContext(ForkifyContext)
-
-  // FIX page not removed from bookmark section on unmark
-
-  // useEffect(() => {
-  //   const isBookmarked = bookmarkedRecipesData.some((bookmark) => bookmark.id === currentRecipeData.id);
-  //   dispatch({ type: "SET_BOOKMARK", payload: isBookmarked });
-  // }, []);
+  const { bookmarkedRecipesData, bookmarks, id, dispatch } = useContext(ForkifyContext)
 
   useEffect(() => {
-    const isBookmarked = bookmarkedRecipesData.some(bookmark => bookmark.id === currentRecipeData.id);
+    const isBookmarked = bookmarkedRecipesData.some(bookmark => bookmark.id === id);
     dispatch({ type: "SET_BOOKMARK", payload: isBookmarked });
-  }, [bookmarkedRecipesData]);
-  // console.log(bookmarkedRecipesData);
+  }, [])
+
+  useEffect(() => {
+    dispatch({ type: "SET_BOOKMARKED_RECIPES", payload: bookmarks })
+  }, [bookmarks])
 
   return (
     <li className="nav__item">

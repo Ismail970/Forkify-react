@@ -6,7 +6,7 @@ import icons from "../assets/svg/icons.svg"
 
 function SearchRecipe() {
   const { query, dispatch } = useContext(ForkifyContext)
-  const { setAlert, setSearchErr } = useContext(AlertContext)
+  const { setAlert, dispatch: alertDispatch } = useContext(AlertContext)
 
   const onChange = e => {
     e.preventDefault()
@@ -18,10 +18,11 @@ function SearchRecipe() {
     if (query.trim().length === 0) return;
 
     try {
-      setSearchErr(false)
+      alertDispatch({ type: "SET_SEARCH_ERROR", payload: false })
       dispatch({ type: "SET_SHOW_RESAULTS", payload: true })
 
       const { recipes } = await getRecipes(query)
+      if (recipes.length === 0) throw new Error("Can't find your recipe.")
 
       dispatch({ type: "GET_RECIPES", payload: recipes })
       dispatch({ type: "SET_QUERY", payload: "" })
@@ -31,7 +32,7 @@ function SearchRecipe() {
       dispatch({ type: "SET_SHOW_PAGINATION", payload: false })
 
       setAlert(error.message)
-      setSearchErr(true)
+      alertDispatch({ type: "SET_SEARCH_ERROR", payload: true })
     } finally {
       dispatch({ type: "SET_SHOW_RESAULTS", payload: false })
     }
