@@ -79,6 +79,15 @@ function SearchResults() {
         {searchErr && <Alert />}
       </ul>
       {showPagBtns && <PaginationButtons />}
+
+      <p class="copyright">
+        &copy; Desinged by Jonas Schmedtmann and developed by
+        <a
+          className="github-link"
+          target="_blank"
+          href="https://github.com/Ismail970"
+        > Ismail</a>
+      </p>
     </div>
   )
 }
