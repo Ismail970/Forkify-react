@@ -4,13 +4,9 @@ import icons from "../assets/svg/icons.svg"
 import RecipePreview from './RecipesPreview'
 
 function BookmarkRecipe() {
-  const { bookmarkedRecipesData, bookmarks, id, dispatch } = useContext(ForkifyContext)
+  const { bookmarkedRecipesData, bookmarks, dispatch } = useContext(ForkifyContext)
 
-  useEffect(() => {
-    const isBookmarked = bookmarkedRecipesData.some(bookmark => bookmark.id === id);
-    dispatch({ type: "SET_BOOKMARK", payload: isBookmarked });
-  }, [])
-
+  // Update bookmark list with data from local storage
   useEffect(() => {
     dispatch({ type: "SET_BOOKMARKED_RECIPES", payload: bookmarks })
   }, [bookmarks])

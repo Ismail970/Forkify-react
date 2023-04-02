@@ -1,6 +1,7 @@
 import { createContext, useReducer } from 'react';
 import fokifyReducer from './ForkifyReducer';
 import useLocalStorage from '../../hooks/useLocalStorage';
+import usePagination from '../../hooks/usePagination';
 
 const ForkifyContext = createContext()
 
@@ -23,13 +24,17 @@ export const ForkifyProvider = ({ children }) => {
 
   const [bookmarks, setBookmarks] = useLocalStorage('bookmarks', state.bookmarkedRecipesData);
 
+  const RES_PER_PAGE = import.meta.env.VITE_RES_PER_PAGE;
+  const { visibleItems, numPages } = usePagination(state.recipeData, RES_PER_PAGE, state.pagination)
+
   return (
     <ForkifyContext.Provider
       value={{
         ...state,
         dispatch,
         bookmarks,
-        setBookmarks
+        setBookmarks,
+        visibleItems, numPages
       }}
     >
       {children}

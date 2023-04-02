@@ -10,12 +10,11 @@ import Alert from './Alert'
 function SearchResults() {
   const {
     id,
-    recipeData,
     bookmarkedRecipesData,
-    pagination,
     showPagBtns,
     showResaults,
-    dispatch
+    visibleItems,
+    dispatch,
   } = useContext(ForkifyContext)
 
   const {
@@ -24,56 +23,57 @@ function SearchResults() {
     dispatch: alertDispatch
   } = useContext(AlertContext)
 
-  const RES_PER_PAGE = import.meta.env.VITE_RES_PER_PAGE;
-  const indexOfLastRecipe = pagination * RES_PER_PAGE;
-  const indexOfFirstRecipe = indexOfLastRecipe - RES_PER_PAGE;
-  const currentRecipes = recipeData.slice(indexOfFirstRecipe, indexOfLastRecipe);
-
   useEffect(() => {
+    // Set id on load
+    dispatch({ type: "SET_ID", payload: window.location.hash.slice(1) })
+
+    // Set id of the current page on url changes
     const handleHashChange = () => {
       dispatch({ type: "SET_ID", payload: window.location.hash.slice(1) })
     }
 
     window.addEventListener("hashchange", handleHashChange)
 
-    return () => {
-      window.removeEventListener("hashchange", handleHashChange)
-    }
-  }, [])
-
-  useEffect(() => {
-    dispatch({ type: "SET_ID", payload: window.location.hash.slice(1) })
-
     const fetchPage = async () => {
+      // If there is no id do nothing
       if (!id) return;
 
       try {
+        // Hide alert and page
         alertDispatch({ type: "SET_PAGE_ERROR", payload: false })
-        dispatch({ type: "SET_PAGE", payload: false })
+        dispatch({ type: "HIDE_PAGE" })
 
+        // Get data of the current page/id
         const { recipe } = await getRecipe(id)
 
+        // Display recipe
         dispatch({ type: "SET_RECIPE", payload: recipe })
-        dispatch({ type: "SET_PAGE", payload: true })
-        dispatch({ type: 'SET_ACTIVE_RECIPE', payload: id });
 
+        // Show page bookmarked if it is
         const isBookmarked = bookmarkedRecipesData.some(data => data.id === id);
-        dispatch({ type: "SET_BOOKMARK", payload: isBookmarked });
+        dispatch({ type: "SET_IS_BOOKMARKED", payload: isBookmarked });
 
       } catch (error) {
-        dispatch({ type: "SET_PAGE", payload: false })
+        // Hide page
+        dispatch({ type: "HIDE_PAGE" })
+        // Set error message
         setAlert(error.message)
+        // Display error
         alertDispatch({ type: "SET_PAGE_ERROR", payload: true })
       }
     }
 
     fetchPage()
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange)
+    }
   }, [id])
 
   return (
     <div className="search-results">
       <ul className="results">
-        {showResaults ? <Spinner /> : currentRecipes.map(data => (
+        {showResaults ? <Spinner /> : visibleItems.map(data => (
           <RecipePreview key={data.id} recipeData={data} />
         ))}
         {searchErr && <Alert />}

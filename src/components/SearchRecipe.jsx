@@ -10,30 +10,36 @@ function SearchRecipe() {
 
   const onChange = e => {
     e.preventDefault()
+    // Save query
     dispatch({ type: "SET_QUERY", payload: e.target.value })
   }
 
   const onSubmit = async e => {
     e.preventDefault()
+    // If there is no query do nothing
     if (query.trim().length === 0) return;
 
     try {
+      // Hide search error and display spinner
       alertDispatch({ type: "SET_SEARCH_ERROR", payload: false })
       dispatch({ type: "SET_SHOW_RESAULTS", payload: true })
 
       const { recipes } = await getRecipes(query)
+      // If recipe if not found return an error
       if (recipes.length === 0) throw new Error("Can't find your recipe.")
 
-      dispatch({ type: "GET_RECIPES", payload: recipes })
-      dispatch({ type: "SET_QUERY", payload: "" })
-      dispatch({ type: "SET_SHOW_PAGINATION", payload: true })
+      // Show recipes
+      dispatch({ type: "SHOW_RECIPES", payload: recipes })
     } catch (error) {
-      dispatch({ type: "GET_RECIPES", payload: [] })
-      dispatch({ type: "SET_SHOW_PAGINATION", payload: false })
+      // Hide search and pagination buttons
+      dispatch({ type: "HIDE_RECIPES" })
 
+      // Set error message
       setAlert(error.message)
+      // Display error
       alertDispatch({ type: "SET_SEARCH_ERROR", payload: true })
     } finally {
+      // Hide spinner
       dispatch({ type: "SET_SHOW_RESAULTS", payload: false })
     }
   }

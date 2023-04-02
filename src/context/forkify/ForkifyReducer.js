@@ -1,8 +1,15 @@
 const FokifyReducer = (state, action) => {
   switch (action.type) {
-    case "GET_RECIPES": return {
+    case "SHOW_RECIPES": return {
       ...state,
       recipeData: action.payload,
+      query: "",
+      showPagBtns: true
+    }
+    case "HIDE_RECIPES": return {
+      ...state,
+      recipeData: [],
+      showPagBtns: false
     }
     case "SET_QUERY": return {
       ...state,
@@ -12,17 +19,18 @@ const FokifyReducer = (state, action) => {
       ...state,
       showResaults: action.payload
     }
-    case "SET_BOOKMARK": return {
+    case "SET_IS_BOOKMARKED": return {
       ...state,
       isBookmarked: action.payload
     }
     case "SET_RECIPE": return {
       ...state,
       currentRecipeData: action.payload,
+      showPage: true
     }
-    case "SET_PAGE": return {
+    case "HIDE_PAGE": return {
       ...state,
-      showPage: action.payload,
+      showPage: false,
     }
     case "SET_ID": return {
       ...state,
@@ -39,10 +47,6 @@ const FokifyReducer = (state, action) => {
     case "SET_PAGINATION": return {
       ...state,
       pagination: action.payload,
-    }
-    case "SET_SHOW_PAGINATION": return {
-      ...state,
-      showPagBtns: action.payload,
     }
     default: return state
   }

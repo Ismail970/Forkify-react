@@ -5,14 +5,12 @@ import Header from './Header';
 
 function Container() {
   return (
-    <>
-      <div className="container">
-        <Header />
-        <SearchResults />
-        <RecipePage />
-        <AddRecipe />
-      </div>
-    </>
+    <div className="container">
+      <Header />
+      <SearchResults />
+      <RecipePage />
+      <AddRecipe />
+    </div>
   )
 }
 

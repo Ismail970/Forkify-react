@@ -4,10 +4,7 @@ import addRecipeReducer from './AddRecipeReducer';
 const AddRecipeContext = createContext()
 
 export const AddRecipeProvider = ({ children }) => {
-  const initialState = {
-    showAddForm: false,
-    userRecipes: [],
-  }
+  const initialState = false
 
   const [state, dispatch] = useReducer(addRecipeReducer, initialState)
 

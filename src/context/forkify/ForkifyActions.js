@@ -16,7 +16,10 @@ export const getRecipes = async query => {
       search: query,
     })
 
-    const res = await Promise.race([fetch(`${API_URL}?${params.toString()}&key=${KEY}`), timeout(TIMEOUT_SEC)]);
+    const res = await Promise.race([
+      fetch(`${API_URL}?${params.toString()}&key=${KEY}`),
+      timeout(TIMEOUT_SEC)
+    ]);
     const { data } = await res.json()
     return data
   } catch (error) {

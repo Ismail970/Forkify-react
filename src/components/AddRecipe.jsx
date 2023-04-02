@@ -16,10 +16,12 @@ function AddRecipe() {
   const onSubmit = async e => {
     e.preventDefault()
 
+    // Extract form data
     const formDataArr = [...new FormData(e.target)];
     const formData = Object.fromEntries(formDataArr);
 
     try {
+      // Remove form alert if there is any
       alertDispatch({ type: "SET_UPLOAD_ALERT", payload: false })
 
       const ingredients = Object.entries(formData).filter(entry => entry[0].startsWith("ingredient") && entry[1] !== "").map(ing => {
@@ -40,26 +42,34 @@ function AddRecipe() {
         ingredients,
       };
 
+      // Upload data
       const data = await uploadRecipe(recipe);
       const newBookmark = [...bookmarkedRecipesData]
       newBookmark.push(data.recipe)
 
+      // Hide form
       setTimeout(() => dispatch({ type: "SET_ADD_FORM", payload: false }), MODEL_CLOSE_SEC * 1000)
 
+      // Bookmark user's recipe
       forkifyDispatch({ type: "SET_BOOKMARKED_RECIPES", payload: newBookmark });
+      // Save data to local storage
       setBookmarks(newBookmark)
 
+      // Set user's recipe id
       forkifyDispatch({ type: "SET_ID", payload: data.recipe.id })
       history.pushState(null, null, `#${data.recipe.id}`);
 
+      // Set alert message
       setAlert("Your recipe was successfuly uploaded.", true)
     } catch (error) {
       setAlert(error.message)
     } finally {
+      // Show alert
       alertDispatch({ type: "SET_UPLOAD_ALERT", payload: true })
     }
   }
 
+  // Hide form
   const onClick = () => {
     dispatch({ type: "SET_ADD_FORM", payload: false })
   }
@@ -81,6 +91,7 @@ function AddRecipe() {
           className="upload"
           onSubmit={onSubmit}
         >
+          {/* if upload alert is false show form if true show alert */}
           {!uploadAlert
             ? <>
               <div className="upload__column">

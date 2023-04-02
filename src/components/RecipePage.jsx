@@ -13,6 +13,7 @@ function RecipePage() {
     isBookmarked,
     servings,
     bookmarks,
+    bookmarkedRecipesData,
     setBookmarks,
     dispatch
   } = useContext(ForkifyContext)
@@ -20,33 +21,41 @@ function RecipePage() {
   const { pageErr } = useContext(AlertContext)
 
   const handleAddBookmark = () => {
+    // Toggle bookmark button
     const newBookmarkState = !isBookmarked;
-    dispatch({ type: "SET_BOOKMARK", payload: newBookmarkState })
+    dispatch({ type: "SET_IS_BOOKMARKED", payload: newBookmarkState })
 
+    // Save bookmarked data to local storage
     let data = [...bookmarks]
     if (newBookmarkState) {
       data.push(currentRecipeData)
-      setBookmarks(data)
     } else {
-      const newData = data.filter(recipe => recipe.id !== currentRecipeData.id)
-      setBookmarks(newData)
+      data = data.filter(recipe => recipe.id !== currentRecipeData.id)
     }
-
-    dispatch({ type: "SET_BOOKMARKED_RECIPES", payload: data })
+    setBookmarks(data)
   }
 
   const handleDecrement = () => servings > 1 && dispatch({ type: "UPDATE_SERVINGS", payload: servings - 1 })
 
   const handleIncrement = () => dispatch({ type: "UPDATE_SERVINGS", payload: servings + 1 })
 
+  // Set page's bookmark button
+  useEffect(() => {
+    const isBookmarked = bookmarkedRecipesData.some(bookmark => bookmark.id === id);
+    dispatch({ type: "SET_IS_BOOKMARKED", payload: isBookmarked });
+  }, [])
+
+  // Save servings of the current page
   useEffect(() => {
     dispatch({ type: "UPDATE_SERVINGS", payload: currentRecipeData.servings })
   }, [currentRecipeData])
 
   return (
     <div className="recipe">
+      {/* Display error if there is */}
       {pageErr && <Alert />}
 
+      {/* if there is no page display message */}
       {!id
         ? <div className="message">
           <div>
@@ -56,6 +65,7 @@ function RecipePage() {
           </div>
           <p>Start by searching for a recipe or an ingredient. Have fun!</p>
         </div>
+        // display page or spinner
         : showPage
           ? <>
             <figure className="recipe__fig">
@@ -162,6 +172,7 @@ function RecipePage() {
               </a>
             </div>
           </>
+          // Display spinner if there is a page and no error
           : (id && !pageErr) && <Spinner />}
     </div>
   )

@@ -3,9 +3,7 @@ import ForkifyContext from '../context/forkify/ForkifyContext'
 import icons from "../assets/svg/icons.svg"
 
 function PaginationButtons() {
-  const { pagination, recipeData, dispatch } = useContext(ForkifyContext)
-
-  const numPages = Math.ceil(recipeData.length / 10);
+  const { pagination, dispatch, numPages } = useContext(ForkifyContext)
 
   const handleDecrement = () => dispatch({ type: "SET_PAGINATION", payload: pagination - 1 })
 
@@ -21,7 +19,7 @@ function PaginationButtons() {
         <svg className="search__icon">
           <use href={`${icons}#icon-arrow-left`}></use>
         </svg>
-        <span>Page {pagination}</span>
+        <span>Page {pagination - 1}</span>
       </button>}
 
       {numPages !== pagination && <button
