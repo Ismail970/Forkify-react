@@ -7,11 +7,23 @@ import icons from "../assets/svg/icons.svg"
 import Alert from "./Alert"
 
 function AddRecipe() {
-  const MODEL_CLOSE_SEC = import.meta.env.VITE_MODEL_CLOSE_SEC
+  const {
+    dispatch,
+    showAddForm,
+    hideAddForm
+  } = useContext(AddRecipeContext)
 
-  const { dispatch, showAddForm } = useContext(AddRecipeContext)
-  const { bookmarkedRecipesData, setBookmarks, dispatch: forkifyDispatch } = useContext(ForkifyContext)
-  const { setAlert, dispatch: alertDispatch, uploadAlert } = useContext(AlertContext)
+  const {
+    bookmarkedRecipesData,
+    setBookmarks,
+    dispatch: forkifyDispatch
+  } = useContext(ForkifyContext)
+
+  const {
+    setAlert,
+    uploadAlert,
+    dispatch: alertDispatch,
+  } = useContext(AlertContext)
 
   const onSubmit = async e => {
     e.preventDefault()
@@ -47,9 +59,6 @@ function AddRecipe() {
       const newBookmark = [...bookmarkedRecipesData]
       newBookmark.push(data.recipe)
 
-      // Hide form
-      setTimeout(() => dispatch({ type: "SET_ADD_FORM", payload: false }), MODEL_CLOSE_SEC * 1000)
-
       // Bookmark user's recipe
       forkifyDispatch({ type: "SET_BOOKMARKED_RECIPES", payload: newBookmark });
       // Save data to local storage
@@ -66,12 +75,14 @@ function AddRecipe() {
     } finally {
       // Show alert
       alertDispatch({ type: "SET_UPLOAD_ALERT", payload: true })
+      // Hide form
+      hideAddForm()
     }
   }
 
   // Hide form
   const onClick = () => {
-    dispatch({ type: "SET_ADD_FORM", payload: false })
+    dispatch({ type: "HIDE_ADD_FORM" })
   }
 
   return (

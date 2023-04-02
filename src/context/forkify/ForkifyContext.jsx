@@ -34,7 +34,8 @@ export const ForkifyProvider = ({ children }) => {
         dispatch,
         bookmarks,
         setBookmarks,
-        visibleItems, numPages
+        visibleItems,
+        numPages
       }}
     >
       {children}
