@@ -80,7 +80,7 @@ function SearchResults() {
       </ul>
       {showPagBtns && <PaginationButtons />}
 
-      <p class="copyright">
+      <p className="copyright">
         &copy; Desinged by Jonas Schmedtmann and developed by
         <a
           className="github-link"
